@@ -1,25 +1,29 @@
 .chat {
   display: flex;
   flex-direction: column;
+  width: 30%;
+  border: 1px solid #eee;
 }
 
 .chat-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 1rem;
 }
 
 .chat-search-container {
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1.5rem 1rem;
 }
 
 .chat-search-bar {
-  padding: 0.4rem 2rem;
+  padding: 0.6rem 2rem;
+  min-width: 80%;
   border-radius: 5rem;
   background-image: url("search-icon.png");
   background-repeat: no-repeat;
   background-size: 15px;
-  background-position: 10px 6px;
+  background-position: 10px 9px;
   border: none;
   outline: none;
 }
@@ -27,8 +31,7 @@
 .chat-list-item {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1.5rem;
-  border: 1px solid #eee;
+  padding: 0.5rem 2.5rem;
 }
 
 .chat-avatar {
@@ -40,10 +43,14 @@
 
 .chat-info{
     font-size: 14px;
-    border: 1px solid #eee;
+}
+
+.chat-name{
+    margin-bottom: 0rem;
 }
 
 .chat-last-message{
     font-size: 12px;
+    margin-top: 0.2rem;
     color: #888;
 }

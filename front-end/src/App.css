@@ -1,4 +1,16 @@
-body{
-    margin: 0;
-    padding: 0;
+body {
+  
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+html {
+  height: 100%;
+}
+
+.app-container {
+  display: flex;
+
+  border: 1px solid #eee;
 }

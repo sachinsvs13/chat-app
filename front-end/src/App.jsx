@@ -1,14 +1,18 @@
-import './App.css'
-import Chat from './Components/Chat'
-import Header from './Header'
+import "./App.css";
+import Chat from "./Components/Chat";
+import ChatMessage from './Components/ChatMessage';
+import Header from "./Header";
 
 function App() {
   return (
-    <div>
-      <Header/>
-      <Chat/>
-    </div>
-  )
+    <>
+      <Header />
+      <div className="app-container">
+        <Chat />
+        <ChatMessage />
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;
