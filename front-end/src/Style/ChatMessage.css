@@ -1,0 +1,34 @@
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 auto;
+}
+
+.message-avatar {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  border: 1px solid #eee;
+}
+
+.message-body {
+  border: 1px solid #eee;
+  text-align: right;
+  flex: 1 1 auto;
+  align-content: flex-end;
+  padding: 1.5rem;
+}
+
+.message-input-container {
+  display: flex;
+  padding: 1rem;
+}
+
+.message-input {
+  flex: 1 1 auto;
+  padding: 0.8rem 2rem;
+  border-radius: 5rem;
+  border: none;
+  outline: none;
+}
