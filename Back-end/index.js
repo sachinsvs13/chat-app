@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const socketIo = require("socket.io");
+require("dotenv").config();
+const connectDB = require("./connection/Connection");
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -19,6 +21,7 @@ io.on("connection", (socket) => {
   });
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  connectDB(process.env.MONGO_URL);
 });
