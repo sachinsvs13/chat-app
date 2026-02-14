@@ -50,6 +50,14 @@ const getOtp = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    throw new BadRequestError("Please provide email and otp");
+  }
+  const validOtp = await OTP.findOne({ email, otp });
+  if (!validOtp) {
+    throw new UnAuthenticatedError("Invalid OTP");
+  }
   const user = await User.create({ ...req.body });
   if (!user) {
     throw new UnAuthenticatedError("User not found");

@@ -2,6 +2,19 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const otpSchema = new mongoose.Schema({
+  otp: {
+    type: String,
+    required: [true, "otp is required"],
+    trim: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: 60, // OTP expires after 1 minutes
+  },
+});
+
 const userSchema = new mongoose.Schema({
   userName: {
     type: String,
@@ -32,13 +45,8 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  otp: {
-    type: String,
-    required: [true, "otp is required"],
-    trim: true,
-  },
+  otpModel: otpSchema,
 });
-
 userSchema.methods.createJWT = function () {
   return jwt.sign(
     { userId: this._id, name: this.userName },
