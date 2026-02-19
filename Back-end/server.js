@@ -7,6 +7,7 @@ const connectDB = require("./connection/Connection");
 const errorHandlerMiddleware = require("./Middleware/ErrorHandler");
 const notFoundMiddleware = require("./middleware/NotFound");
 const userRoute = require("./Router/User");
+const chatRoute = require("./Router/Chat");
 const http = require("http");
 const socketIo = require("socket.io");
 
@@ -35,11 +36,12 @@ app.use(cors({
 
 // Middleware
 app.use(express.json());
+app.use(errorHandlerMiddleware);
+app.use(notFoundMiddleware);
 
 // Routes
 app.use("/api/v1/auth", userRoute);
-app.use(errorHandlerMiddleware);
-app.use(notFoundMiddleware);
+app.use("/api/v1/chats", chatRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the To-Do App API");

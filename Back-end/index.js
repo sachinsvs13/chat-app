@@ -7,6 +7,7 @@ const connectDB = require("./connection/Connection");
 const NotFoundMiddleWare = require("./middleware/NotFound");
 const errorHandlerMiddleware = require("./Middleware/ErrorHandler");
 const userRoute = require("./Router/User");
+const chatRoute = require("./Router/Chat");
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -25,12 +26,14 @@ io.on("connection", (socket) => {
   });
 });
 
-
 //Middleware
 app.use(express.json());
 
+
 //Routes
 app.use("/api/v1/auth", userRoute);
+app.use("/api/v1/chats", chatRoute);
+
 app.get("/", (req, res) => {
   res.send("Welcome to the chat app API");
 });
