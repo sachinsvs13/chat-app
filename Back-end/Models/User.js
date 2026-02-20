@@ -47,6 +47,13 @@ const userSchema = new mongoose.Schema({
   },
   otpModel: otpSchema,
 });
+
+userSchema.pre("save", async function () {
+  if (this.isModified("otpModel.otp")) {
+    const salt = await bcrypt.genSalt(10);
+    this.otpModel.otp = await bcrypt.hash(this.otpModel.otp, salt);
+  }
+});
 userSchema.methods.createJWT = function () {
   return jwt.sign(
     { userId: this._id, name: this.userName },
@@ -55,6 +62,11 @@ userSchema.methods.createJWT = function () {
       expiresIn: process.env.JWT_LIFETIME,
     },
   );
+};
+
+userSchema.methods.compareOTP = async function (canditateOTP) {
+  const isMatch = await bcrypt.compare(canditateOTP, this.otpModel.otp);
+  return isMatch;
 };
 
 module.exports = mongoose.model("User", userSchema);

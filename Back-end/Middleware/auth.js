@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const Todo = require("../Models/todo.js");
 const { UnAuthenticatedError } = require("../Errors");
 
 const auth = async (req, res, next) => {
@@ -12,7 +11,7 @@ const auth = async (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    // attach the user to the job routes
+    // attach the user to the Chat routes
     req.user = { userId: payload.userId, name: payload.name };
     next();
   } catch (error) {
