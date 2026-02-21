@@ -5,21 +5,19 @@ const Message = require("../Models/Message");
 const User = require("../Models/User");
 
 const createChat = async (req, res) => {
-  // const { receiverId, message } = req.body;
-  // if (!receiverId || !message) {
-  //   throw new BadRequestError("Please provide receiverId and message");
-  // }
-  // const chat = await Chat.create({
-  //   sender: req.user.userId,
-  //   receiver: receiverId,
-  //   message,
-  // });
+  const { receiver  } = req.body;
+  if (!receiver ) {
+    throw new BadRequestError("Please provide receiver");
+  }
+  const chat = await Chat.create({
+    sender: req.user.userId,
+    receiver: receiver,
+  });
   // await Message.create({
   //   chatId: chat._id,
   //   senderId: req.user.userId,
-  //   text: message,
   // });
-  // res.status(StatusCodes.CREATED).json({ chat });
+  res.status(StatusCodes.CREATED).json({ chat });
   console.log(req.user);
   
 };

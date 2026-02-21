@@ -12,11 +12,8 @@ const chatSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Please provide receiver"],
     },
-    message: {
-      type: String,
-      required: [true, "message is required"],
-      trim: true,
-    },
   },
   { timestamps: true },
 );
+
+module.exports = mongoose.model("Chat", chatSchema);
