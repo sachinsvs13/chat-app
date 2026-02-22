@@ -5,13 +5,15 @@ const Message = require("../Models/Message");
 const User = require("../Models/User");
 
 const createChat = async (req, res) => {
-  const { receiver  } = req.body;
-  if (!receiver ) {
+  const { name } = req.body;
+
+  const receiver = await User.findOne({ name });
+  if (!receiver) {
     throw new BadRequestError("Please provide receiver");
   }
   const chat = await Chat.create({
     sender: req.user.userId,
-    receiver: receiver,
+    receiver: receiver._id,
   });
   // await Message.create({
   //   chatId: chat._id,
@@ -19,13 +21,12 @@ const createChat = async (req, res) => {
   // });
   res.status(StatusCodes.CREATED).json({ chat });
   console.log(req.user);
-  
 };
 
 const getChats = async (req, res) => {
   const chats = await Chat.find({
     $or: [{ sender: req.user.userId }, { receiver: req.user.userId }],
-    })
+  })
     .populate("sender", "email avatar")
     .populate("receiver", "email avatar")
     .sort({ createdAt: -1 });

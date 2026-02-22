@@ -76,8 +76,17 @@ const showAllUsers = async (req, res) => {
   res.status(StatusCodes.OK).json({ user });
 };
 
+const DeleteUser = async (req, res) => {
+  const user = await User.findOneAndDelete({ _id: req.params.id });
+  if (!user) {
+    throw new UnAuthenticatedError("Invalid Credentials");
+  }
+  res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
+}
+
 module.exports = {
   getOtp,
   verifyOtp,
   showAllUsers,
+  DeleteUser
 };
