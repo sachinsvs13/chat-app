@@ -8,8 +8,7 @@ const chatSchema = new mongoose.Schema(
       required: [true, "Please provide sender"],
     },
     receiver: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: [true, "Please provide receiver"],
     },
   },

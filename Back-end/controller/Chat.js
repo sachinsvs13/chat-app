@@ -7,7 +7,7 @@ const User = require("../Models/User");
 const createChat = async (req, res) => {
   const { name } = req.body;
 
-  const receiver = await User.findOne({ name });
+  const receiver = await User.findOne({ userName: name });
   if (!receiver) {
     throw new BadRequestError("Please provide receiver");
   }
@@ -20,7 +20,6 @@ const createChat = async (req, res) => {
   //   senderId: req.user.userId,
   // });
   res.status(StatusCodes.CREATED).json({ chat });
-  console.log(req.user);
 };
 
 const getChats = async (req, res) => {

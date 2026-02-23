@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
       "Please provide a valid email",
     ],
     trim: true,
-    unique: true,
+    // unique: true,
   },
   avatar: {
     type: String,
