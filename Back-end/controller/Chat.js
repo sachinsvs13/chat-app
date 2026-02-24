@@ -23,14 +23,30 @@ const createChat = async (req, res) => {
 };
 
 const getChats = async (req, res) => {
-  const chats = await Chat.find({
-    $or: [{ sender: req.user.userId }, { receiver: req.user.userId }],
-  })
+  const {
+    user: { userId },
+  } = req;
+  const chats = await Chat.find({ sender: userId })
     .populate("sender", "email avatar")
     .populate("receiver", "email avatar")
     .sort({ createdAt: -1 });
   res.status(StatusCodes.OK).json({ chats });
 };
+
+const deleteChat = async (req, res) => {
+  const {
+    user: { userId },
+    params: { chatId },
+  } = req;
+  const chat = await Chat.findOneAndDelete({
+    _id: chatId,
+    sender: userId,
+  });
+  if (!chat) {
+    throw new UnAuthenticatedError("You are not authorized to delete this chat");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Chat deleted successfully" });
+}
 
 const getMessages = async (req, res) => {
   const { chatId } = req.params;
@@ -44,4 +60,5 @@ module.exports = {
   createChat,
   getChats,
   getMessages,
+  deleteChat,
 };
