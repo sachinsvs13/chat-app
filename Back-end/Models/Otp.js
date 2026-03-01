@@ -11,7 +11,7 @@ const otpSchema = new mongoose.Schema({
       "Please provide a valid email",
     ],
     trim: true,
-    // unique: true,
+    unique: true,
   },
     otp: {
     type: String,

@@ -8,7 +8,9 @@ const NotFoundMiddleWare = require("./middleware/NotFound");
 const errorHandlerMiddleware = require("./Middleware/ErrorHandler");
 const userRoute = require("./Router/User");
 const chatRoute = require("./Router/Chat");
-const auth = require("./Middleware/auth");
+const MessageRoute = require("./Router/Message");
+const auth = require("./Middleware/UserAuth");
+const chatAuth = require("./Middleware/ChatAuth");
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -30,10 +32,11 @@ io.on("connection", (socket) => {
 //Middleware
 app.use(express.json());
 
-
 //Routes
 app.use("/api/v1/auth", userRoute);
-app.use("/api/v1/chats",auth, chatRoute);
+app.use("/api/v1/chats", auth, chatRoute);
+// app.use("/api/v1/message", chatAuth, MessageRoute);
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the chat app API");

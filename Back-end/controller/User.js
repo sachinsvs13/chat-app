@@ -6,6 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const Chat = require("../Models/Chat");
 
 function generateOTP() {
   return crypto.randomInt(100000, 999999).toString();
@@ -71,6 +72,23 @@ const verifyOtp = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token });
 };
 
+const userLogin = async (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    throw new BadRequestError("Please provide email and otp");
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new UnAuthenticatedError("User not found");
+  }
+  const validOtp = await OTP.findOne({ email, otp });
+  if (!validOtp) {
+    throw new UnAuthenticatedError("Invalid OTP");
+  }
+  const token = user.createJWT();
+  res.status(StatusCodes.OK).json({ user, token });
+};
+
 const showAllUsers = async (req, res) => {
   const user = await User.find({});
   res.status(StatusCodes.OK).json({ user });
@@ -81,12 +99,18 @@ const DeleteUser = async (req, res) => {
   if (!user) {
     throw new UnAuthenticatedError("Invalid Credentials");
   }
+  await Chat.deleteMany({ sender: user._id });
+
+  // await Chat.deleteMany({ receiver: user._id });
+  // await Message.deleteMany({ senderId: user._id });
+
   res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
-}
+};
 
 module.exports = {
   getOtp,
   verifyOtp,
   showAllUsers,
-  DeleteUser
+  DeleteUser,
+  userLogin
 };

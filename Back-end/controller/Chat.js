@@ -5,14 +5,18 @@ const Message = require("../Models/Message");
 const User = require("../Models/User");
 
 const createChat = async (req, res) => {
-  const { name } = req.body;
+
+  const {
+    user: { userId },
+    body : { name },
+  } = req;
 
   const receiver = await User.findOne({ userName: name });
   if (!receiver) {
     throw new BadRequestError("Please provide receiver");
   }
   const chat = await Chat.create({
-    sender: req.user.userId,
+    sender: userId,
     receiver: receiver._id,
   });
   // await Message.create({
@@ -32,6 +36,20 @@ const getChats = async (req, res) => {
     .sort({ createdAt: -1 });
   res.status(StatusCodes.OK).json({ chats });
 };
+
+const getSingleChat = async (req,res) => {
+  const {
+    user : {userId},
+    params: { id : chatId },
+  } = req;
+  const chat = await Chat.findById({ _id: chatId, sender: userId })
+    .populate("sender", "email avatar")
+    .populate("receiver", "email avatar");
+  if (!chat) {
+    throw new BadRequestError("Chat not found");
+  }
+  res.status(StatusCodes.OK).json({ chat });
+}
 
 const deleteChat = async (req, res) => {
   const {
@@ -61,4 +79,5 @@ module.exports = {
   getChats,
   getMessages,
   deleteChat,
+  getSingleChat
 };

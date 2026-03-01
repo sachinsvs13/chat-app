@@ -9,7 +9,7 @@ const {
   DeleteUser,
 } = require("../controller/User");
 
-// router.post("/login", userLogin);
+router.post("/login", userLogin);
 
 router.get("/", showAllUsers);
 
