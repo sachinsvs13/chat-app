@@ -1,0 +1,109 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* align-items: center; */
+  /* justify-content: center; */
+  background-color: var(--FORM-BG);
+  box-shadow: var(--FORM-SHADOW);
+  height: 300px;
+  width: 300px;
+  gap: 5px;
+  /* padding: clamp(1em, 5vh, 0em); */
+  padding: 0 1rem;
+}
+
+.form-header {
+  text-align: center;
+  padding-bottom: 0.5em;
+  margin: 1em 1em;
+  border-bottom: 1px solid #eee;
+}
+
+.form-label {
+  color: #ccc;
+  margin: 1rem 0 0.3rem 0;
+}
+
+.form-input {
+  background-color: var(--FORM-INPUT-BG);
+  color: var(--FORM-INPUT-FG);
+  border: none;
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+.form-input:focus {
+  outline: none;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-btn {
+  background-color: var(--FORM-BTN-BG);
+  color: var(--FORM-BTN-FG);
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 25%;
+}
+
+.profile-picture {
+  opacity: 0.75;
+  height: 250px;
+  width: 250px;
+  position: relative;
+  overflow: hidden;
+
+  /* default image */
+  background: url("https://qph.cf2.quoracdn.net/main-qimg-f32f85d21d59a5540948c3bfbce52e68");
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 8px 6px -6px black;
+}
+
+/* toggle icon state */
+.profile-picture:hover .upload-icon {
+  opacity: 1;
+}
+
+.upload-icon {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* initial icon state */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #ccc;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #bbb;
+}
+
+.file-uploader {
+  /* make it invisible */
+  opacity: 0;
+  /* make it take the full height and width of the parent container */
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  /* make it absolute */
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
