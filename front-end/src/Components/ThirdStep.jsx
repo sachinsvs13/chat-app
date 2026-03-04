@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function ThirdStep({ updateData, data, prevStep }) {
   const handleChange = (e) => {
@@ -20,7 +21,20 @@ export default function ThirdStep({ updateData, data, prevStep }) {
     }
   };
 
-  const handleSubmit = () => {
+  axios
+    .post("http://localhost:3000/api/v1/auth/login", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      console.log("Login successful:", response.data);
+    })
+    .catch((error) => {
+      console.error("Login error:", error);
+    });
+
+  const handleSubmit = async () => {
     // Handle the final form submission logic (e.g., send to API)
     console.log("Form Submitted:", data);
     alert("Form Submitted Successfully!");
@@ -42,7 +56,7 @@ export default function ThirdStep({ updateData, data, prevStep }) {
                 setImage(null);
                 setPreviewUrl("");
               }}
-              style={{margin: '0'}}
+              style={{ margin: "0" }}
             >
               Remove Image
             </button>
