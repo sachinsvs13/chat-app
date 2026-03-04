@@ -56,6 +56,8 @@ const verifyOtp = async (req, res) => {
   if (!email || !otp) {
     throw new BadRequestError("Please provide email and otp");
   }
+
+
   const validOtp = await OTP.findOne({ email, otp });
   if (!validOtp) {
     throw new UnAuthenticatedError("Invalid OTP");
@@ -64,6 +66,15 @@ const verifyOtp = async (req, res) => {
   // if (!isOtpValid) {
   //   throw new UnAuthenticatedError("Invalid OTP");
   // }
+
+  // const user = new User({
+  //   userName: req.body.userName,
+  //   email,
+  //   otpModel: { otp },
+  //   avatar: req.file,
+  // });
+  // await user.save();
+  
   const user = await User.create({ ...req.body });
   if (!user) {
     throw new UnAuthenticatedError("User not found");
@@ -74,6 +85,7 @@ const verifyOtp = async (req, res) => {
 
 const userLogin = async (req, res) => {
   const { email, otp } = req.body;
+
   if (!email || !otp) {
     throw new BadRequestError("Please provide email and otp");
   }
@@ -112,5 +124,5 @@ module.exports = {
   verifyOtp,
   showAllUsers,
   DeleteUser,
-  userLogin
+  userLogin,
 };
