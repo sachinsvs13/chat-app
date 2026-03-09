@@ -13,14 +13,14 @@ const otpSchema = new mongoose.Schema({
     trim: true,
     unique: true,
   },
-    otp: {
+  otp: {
     type: String,
     trim: true,
   },
-    createdAt: {
+  createdAt: {
     type: Date,
-    default: Date.now,
     expires: 600, // OTP expires after 10 minutes
+    default: Date.now,
   },
 });
 
@@ -32,7 +32,7 @@ otpSchema.methods.createJWT = function () {
       expiresIn: process.env.JWT_LIFETIME,
     },
   );
-}
+};
 
 otpSchema.methods.compareOTP = async function (canditateOTP) {
   const isMatch = await bcrypt.compare(canditateOTP, this.otp);

@@ -9,7 +9,7 @@ export default function MultiStepForm() {
   const [formData, setFormData] = useState({
     Email: "",
     OTP: "",
-    ProfilePicture: "",
+    avatar: "",
     UserName: "",
   });
 

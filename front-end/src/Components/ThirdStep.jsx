@@ -21,18 +21,18 @@ export default function ThirdStep({ updateData, data, prevStep }) {
     }
   };
 
-  axios
-    .post("http://localhost:3000/api/v1/auth/login", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((response) => {
-      console.log("Login successful:", response.data);
-    })
-    .catch((error) => {
-      console.error("Login error:", error);
-    });
+  // axios
+  //   .post("http://localhost:3000/api/v1/auth/login", data, {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   })
+  //   .then((response) => {
+  //     console.log("Login successful:", response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Login error:", error);
+  //   });
 
   const handleSubmit = async () => {
     // Handle the final form submission logic (e.g., send to API)

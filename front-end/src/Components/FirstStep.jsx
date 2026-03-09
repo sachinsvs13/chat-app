@@ -1,28 +1,32 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 export default function FirstStep({ updateData, nextStep, data }) {
   const handleChange = (e) => {
     updateData({ [e.target.name]: e.target.value });
   };
 
-  const handleNext = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3000/api/v1/auth/getOtp", {
+        email: data.Email,
+      })
+      .then(() => console.log("success"))
+      .catch((err) => console.error(err));
+
     if (data.Email && data.Email.includes("@")) {
       nextStep();
     } else {
       return <h1>Please fill the Email field</h1>;
     }
   };
-  const handlesubmit = () => {
-    axios
-      .post("http://localhost:3000/api/v1/auth/getOtp", {
-        email: data.email,
-      })
-      .then((res) => console.log("OTP Sended:", res))
-      .catch((err) => console.error(err));
-  };
+  if (HttpStatusCode === 400) {
+    <p>Already Email ID exists</p>;
+  }
+
   return (
     <div className="form-container">
-      <div className="form-group">
+      <form className="form-group" onSubmit={handleSubmit}>
         <h3 className="form-header">Login Form</h3>
         <label className="form-label">Email :</label>
         <input
@@ -33,14 +37,15 @@ export default function FirstStep({ updateData, nextStep, data }) {
           value={data.Email}
           onChange={handleChange}
         />
+        {HttpStatusCode === 400 ? <p>Email mail</p> : null}
         <button
+          type="submit"
           className="form-btn"
-          onClick={handleNext}
           style={{ margin: "1em 0 0 auto" }}
         >
           Next
         </button>
-      </div>
+      </form>
     </div>
   );
 }
