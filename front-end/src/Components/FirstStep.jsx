@@ -20,9 +20,6 @@ export default function FirstStep({ updateData, nextStep, data }) {
       return <h1>Please fill the Email field</h1>;
     }
   };
-  if (HttpStatusCode === 400) {
-    <p>Already Email ID exists</p>;
-  }
 
   return (
     <div className="form-container">

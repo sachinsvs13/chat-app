@@ -8,11 +8,15 @@ export default function SecondStep({ updateData, data, nextStep, prevStep }) {
   };
   const [isOtp, setIsOtp] = useState("");
 
-  const verifyOTP = () => {
-    axios
-      .get("http://localhost:3000/api/v1/auth/getOtp")
-      .then((res) => setIsOtp(res))
-      .catch((err) => console.error(err));
+  const verifyOTP = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/v1/auth/showOtp",
+      );
+      setIsOtp(response.data.otp);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -46,6 +50,7 @@ export default function SecondStep({ updateData, data, nextStep, prevStep }) {
           <button className="form-btn" onClick={prevStep}>
             Back
           </button>
+          {console.log(isOtp)}
           <button className="form-btn" onClick={handleNext}>
             Next
           </button>

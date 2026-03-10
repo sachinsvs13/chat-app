@@ -1,5 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnAuthenticatedError } = require("../Errors");
+const {
+  BadRequestError,
+  UnAuthenticatedError,
+  NotFoundError,
+} = require("../Errors");
 const User = require("../Models/User");
 const OTP = require("../Models/Otp");
 const express = require("express");
@@ -45,10 +49,18 @@ const getOtp = async (req, res) => {
       res.send("OTP sent to your email");
     }
   });
-  const token = otp.createJWT();
   res
     .status(StatusCodes.CREATED)
-    .json({ user: { email: otp.email, otp: otp.otp }, token });
+    .json({ user: { email: otp.email, otp: otp.otp } });
+};
+
+const showOtp = async (req, res) => {
+  const { id } = req.params;
+  const otp = OTP.findOne({ _id: id });
+  if (!otp) {
+    throw new NotFoundError("No Item Found");
+  }
+  res.status(StatusCodes.OK).json(otp);
 };
 
 const verifyOtp = async (req, res) => {
@@ -100,11 +112,6 @@ const userLogin = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token });
 };
 
-const showAllUsers = async (req, res) => {
-  const user = await User.find({});
-  res.status(StatusCodes.OK).json({ user });
-};
-
 const DeleteUser = async (req, res) => {
   const user = await User.findOneAndDelete({ _id: req.params.id });
   if (!user) {
@@ -118,10 +125,36 @@ const DeleteUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
 };
 
+//Development Uses
+const showAllUsers = async (req, res) => {
+  const user = await User.find({});
+  res.status(StatusCodes.OK).json({ user });
+};
+
+const ShowAllOTP = async (req, res) => {
+  const otp = await OTP.find({});
+  res.status(StatusCodes.OK).json({ user });
+};
+
+const DeleteOTP = async (req, res) => {
+  const otp = await OTP.findOneAndDelete({ _id: req.params.id });
+  if (!otp) {
+    throw new UnAuthenticatedError("Invalid Credentials");
+  }
+
+  // await Chat.deleteMany({ receiver: user._id });
+  // await Message.deleteMany({ senderId: user._id });
+
+  res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
+};
+
 module.exports = {
   getOtp,
   verifyOtp,
-  showAllUsers,
   DeleteUser,
   userLogin,
+  showOtp,
+  showAllUsers,
+  ShowAllOTP,
+  DeleteOTP,
 };

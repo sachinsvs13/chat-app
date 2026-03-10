@@ -9,6 +9,9 @@ const {
   getOtp,
   verifyOtp,
   DeleteUser,
+  showOtp,
+  ShowAllOTP,
+  DeleteOTP,
 } = require("../controller/User");
 
 const fileFilter = (req, file, cb) => {
@@ -41,14 +44,21 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-router.post("/login", userLogin);
-
 router.get("/", showAllUsers);
+
+router.get("/:id", showOtp);
 
 router.post("/getOtp", getOtp);
 
 router.post("/verifyOtp", upload.single("avatar"), verifyOtp);
 
 router.delete("/delete/:id", DeleteUser);
+
+//Development uses
+router.post("/login", userLogin);
+
+router.get("/allOtp", ShowAllOTP);
+
+router.delete("otp/:id", DeleteOTP);
 
 module.exports = router;
