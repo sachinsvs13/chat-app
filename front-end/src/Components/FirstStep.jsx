@@ -1,5 +1,4 @@
-import axios, { HttpStatusCode } from "axios";
-
+import axios from "axios";
 export default function FirstStep({ updateData, nextStep, data }) {
   const handleChange = (e) => {
     updateData({ [e.target.name]: e.target.value });
@@ -8,12 +7,11 @@ export default function FirstStep({ updateData, nextStep, data }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3000/api/v1/auth/getOtp", {
+      .post("http://localhost:3000/api/v1/otp/getOtp", {
         email: data.Email,
       })
-      .then(() => console.log("success"))
+      .then((res) => console.log(res.data.otp._id))
       .catch((err) => console.error(err));
-
     if (data.Email && data.Email.includes("@")) {
       nextStep();
     } else {
@@ -34,7 +32,6 @@ export default function FirstStep({ updateData, nextStep, data }) {
           value={data.Email}
           onChange={handleChange}
         />
-        {HttpStatusCode === 400 ? <p>Email mail</p> : null}
         <button
           type="submit"
           className="form-btn"

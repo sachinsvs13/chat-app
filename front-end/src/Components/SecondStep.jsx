@@ -8,20 +8,17 @@ export default function SecondStep({ updateData, data, nextStep, prevStep }) {
   };
   const [isOtp, setIsOtp] = useState("");
 
-  const verifyOTP = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/v1/auth/showOtp",
-      );
-      setIsOtp(response.data.otp);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  console.log(data);
+  console.log(isOtp);
 
   useEffect(() => {
-    verifyOTP;
-  }, []);
+    axios
+      .get(`http://localhost:3000/api/v1/otp/singleOtp/${data.Email}`)
+      .then((res) => {
+        setIsOtp(res.data.otp.otp);
+      })
+      .catch((err) => console.error(err));
+  }, [data.Email]);
 
   const handleNext = () => {
     if (data.OTP && data.OTP.length === 6) {
@@ -31,26 +28,27 @@ export default function SecondStep({ updateData, data, nextStep, prevStep }) {
     }
   };
 
+  console.log(isOtp);
+
   return (
     <div className="form-container">
       <div className="form-group">
         <h3 className="form-header">Login Form</h3>
         <label className="form-label">OTP :</label>
-        {isOtp}
         <input
-          type="text"
+          type="number"
           name="OTP"
           placeholder="OTP"
           value={data.OTP}
           onChange={handleChange}
           className="form-input"
+          maxLength={6}
         />
         <p className="otp-text">OTP sent to {data.Email}</p>
         <div className="button-group">
           <button className="form-btn" onClick={prevStep}>
             Back
           </button>
-          {console.log(isOtp)}
           <button className="form-btn" onClick={handleNext}>
             Next
           </button>

@@ -5,13 +5,9 @@ const path = require("path");
 const {
   userLogin,
   showAllUsers,
-  registerUser,
-  getOtp,
   verifyOtp,
   DeleteUser,
-  showOtp,
-  ShowAllOTP,
-  DeleteOTP,
+  updateUserOtp,
 } = require("../controller/User");
 
 const fileFilter = (req, file, cb) => {
@@ -46,19 +42,14 @@ const upload = multer({
 
 router.get("/", showAllUsers);
 
-router.get("/:id", showOtp);
-
-router.post("/getOtp", getOtp);
-
 router.post("/verifyOtp", upload.single("avatar"), verifyOtp);
+
+router.patch("/:id", updateUserOtp);
 
 router.delete("/delete/:id", DeleteUser);
 
-//Development uses
 router.post("/login", userLogin);
 
-router.get("/allOtp", ShowAllOTP);
-
-router.delete("otp/:id", DeleteOTP);
+//Development uses
 
 module.exports = router;

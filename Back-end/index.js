@@ -10,9 +10,8 @@ const userRoute = require("./Router/User");
 const chatRoute = require("./Router/Chat");
 const MessageRoute = require("./Router/Message");
 const auth = require("./Middleware/UserAuth");
-const chatAuth = require("./Middleware/ChatAuth");
+const otpRoute = require("./Router/Otp");
 const cors = require("cors");
-
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -24,7 +23,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("A user disconnected");
   });
-  
+
   socket.on("chat message", (msg) => {
     console.log("Message: " + msg);
     io.emit("chat message", msg);
@@ -38,8 +37,8 @@ app.use(cors());
 //Routes
 app.use("/api/v1/auth", userRoute);
 app.use("/api/v1/chats", auth, chatRoute);
+app.use("/api/v1/otp", otpRoute);
 // app.use("/api/v1/message", chatAuth, MessageRoute);
-
 
 app.get("/", (req, res) => {
   res.send("Welcome to the chat app API");

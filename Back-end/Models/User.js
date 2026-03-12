@@ -2,19 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const otpSchema = new mongoose.Schema({
-  otp: {
-    type: String,
-    required: [true, "otp is required"],
-    trim: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: 60, // OTP expires after 1 minutes
-  },
-});
-
 const userSchema = new mongoose.Schema({
   userName: {
     type: String,
@@ -46,13 +33,17 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  otpModel: otpSchema,
+  otp: {
+    type: String,
+    required: [true, "otp is required"],
+    trim: true,
+  },
 });
 
 userSchema.pre("save", async function () {
-  if (this.isModified("otpModel.otp")) {
+  if (this.otp) {
     const salt = await bcrypt.genSalt(10);
-    this.otpModel.otp = await bcrypt.hash(this.otpModel.otp, salt);
+    this.otp = await bcrypt.hash(this.otp, salt);
   }
 });
 userSchema.methods.createJWT = function () {
@@ -66,7 +57,7 @@ userSchema.methods.createJWT = function () {
 };
 
 userSchema.methods.compareOTP = async function (canditateOTP) {
-  const isMatch = await bcrypt.compare(canditateOTP, this.otpModel.otp);
+  const isMatch = await bcrypt.compare(canditateOTP, this.otp);
   return isMatch;
 };
 
