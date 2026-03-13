@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function SecondStep({ updateData, data, nextStep, prevStep }) {
   const handleChange = (e) => {
-    updateData({ [e.target.name]: e.target.value });
+    updateData({ [e.target.name]: e.target.value.slice(0, 6) });
   };
   const [isOtp, setIsOtp] = useState("");
 
@@ -20,19 +20,18 @@ export default function SecondStep({ updateData, data, nextStep, prevStep }) {
       .catch((err) => console.error(err));
   }, [data.Email]);
 
-  const handleNext = () => {
-    if (data.OTP && data.OTP.length === 6) {
+  const handleNext = (e) => {
+    e.preventDefault();
+    if (isOtp === data.OTP) {
       nextStep();
     } else {
       return <h1>Please fill the OTP field</h1>;
     }
   };
 
-  console.log(isOtp);
-
   return (
     <div className="form-container">
-      <div className="form-group">
+      <form className="form-group" onSubmit={handleNext}>
         <h3 className="form-header">Login Form</h3>
         <label className="form-label">OTP :</label>
         <input
@@ -46,14 +45,14 @@ export default function SecondStep({ updateData, data, nextStep, prevStep }) {
         />
         <p className="otp-text">OTP sent to {data.Email}</p>
         <div className="button-group">
+          <button type="submit" className="form-btn">
+            Next
+          </button>
           <button className="form-btn" onClick={prevStep}>
             Back
           </button>
-          <button className="form-btn" onClick={handleNext}>
-            Next
-          </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

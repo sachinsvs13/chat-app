@@ -1,14 +1,17 @@
 const express = require("express");
+const app = express();
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const {
   userLogin,
   showAllUsers,
-  verifyOtp,
+  userRegister,
   DeleteUser,
   updateUserOtp,
 } = require("../controller/User");
+
+app.use("/uploads", express.static("uploads"));
 
 const fileFilter = (req, file, cb) => {
   if (
@@ -42,7 +45,7 @@ const upload = multer({
 
 router.get("/", showAllUsers);
 
-router.post("/verifyOtp", upload.single("avatar"), verifyOtp);
+router.post("/userRegister", upload.single("avatar"), userRegister);
 
 router.patch("/:id", updateUserOtp);
 

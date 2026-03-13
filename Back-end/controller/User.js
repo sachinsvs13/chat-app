@@ -8,8 +8,11 @@ const User = require("../Models/User");
 const Chat = require("../Models/Chat");
 const Otp = require("../Models/Otp");
 
-const verifyOtp = async (req, res) => {
-  const { email, otp } = req.body;
+const userRegister = async (req, res) => {
+  const {
+    body: { email, otp },
+    file: { avatar },
+  } = req;
   if (!email || !otp) {
     throw new BadRequestError("Please provide email and otp");
   }
@@ -96,7 +99,7 @@ const showAllUsers = async (req, res) => {
 };
 
 module.exports = {
-  verifyOtp,
+  userRegister,
   DeleteUser,
   userLogin,
   showAllUsers,

@@ -22,11 +22,7 @@ export default function ThirdStep({ updateData, data, prevStep }) {
   };
 
   // axios
-  //   .post("http://localhost:3000/api/v1/auth/login", data, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   })
+  //   .post("http://localhost:3000/api/v1/auth/login", data,)
   //   .then((response) => {
   //     console.log("Login successful:", response.data);
   //   })
@@ -34,14 +30,32 @@ export default function ThirdStep({ updateData, data, prevStep }) {
   //     console.error("Login error:", error);
   //   });
 
-  const handleSubmit = async () => {
+  console.log(data);
+  console.log(image);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("UserName", data.UserName);
+    formData.append("email", data.Email);
+    formData.append("avatar", image);
+    formData.append("otp", data.OTP);
     // Handle the final form submission logic (e.g., send to API)
-    console.log("Form Submitted:", data);
+
+    axios
+      .post("http://localhost:3000/api/v1/auth/userRegister", formData)
+      .then((response) => {
+        console.log("Login successful:", response.data);
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+      });
+    console.log("Form Submitted:", formData);
     alert("Form Submitted Successfully!");
   };
   return (
     <div className="form-container">
-      <div className="form-group">
+      <form className="form-group" onSubmit={handleSubmit}>
         <h3 className="form-header">Login Form</h3>
         {previewUrl ? (
           <div className="profile-picture-preview-container">
@@ -69,8 +83,8 @@ export default function ThirdStep({ updateData, data, prevStep }) {
             <input
               className="file-uploader"
               type="file"
-              name="ProfilePicture"
-              value={data.ProfilePicture}
+              name="avatar"
+              value={data.avatar}
               onChange={handleImageChange}
               accept=".jpg, .jpeg, .png"
             />
@@ -86,14 +100,14 @@ export default function ThirdStep({ updateData, data, prevStep }) {
           className="form-input"
         />
         <div className="button-group" style={{ margin: "1rem 0" }}>
+          <button type="submit" className="form-btn">
+            Submit
+          </button>
           <button className="form-btn" onClick={prevStep}>
             Back
           </button>
-          <button className="form-btn" onClick={handleSubmit}>
-            Submit
-          </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
