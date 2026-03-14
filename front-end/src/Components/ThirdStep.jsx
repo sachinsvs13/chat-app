@@ -10,8 +10,10 @@ export default function ThirdStep({ updateData, data, prevStep }) {
   const [previewUrl, setPreviewUrl] = useState("");
 
   const handleImageChange = (event) => {
+    console.log(event);
+
     const file = event.target.files[0];
-    if (file && file.type.substring(0, 5) === "image") {
+    if (file) {
       setImage(file);
       // Create a local URL for image preview
       setPreviewUrl(URL.createObjectURL(file));
@@ -36,10 +38,10 @@ export default function ThirdStep({ updateData, data, prevStep }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("UserName", data.UserName);
     formData.append("email", data.Email);
-    formData.append("avatar", image);
     formData.append("otp", data.OTP);
+    formData.append("avatar", image);
+    formData.append("UserName", data.UserName);
     // Handle the final form submission logic (e.g., send to API)
 
     axios
