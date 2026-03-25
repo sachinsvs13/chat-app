@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 export default function ThirdStep({ updateData, data, prevStep }) {
@@ -7,7 +7,6 @@ export default function ThirdStep({ updateData, data, prevStep }) {
   };
 
   const [image, setImage] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState("");
 
   const handleImageChange = (event) => {
     console.log(event);
@@ -15,11 +14,6 @@ export default function ThirdStep({ updateData, data, prevStep }) {
     const file = event.target.files[0];
     if (file) {
       setImage(file);
-      // Create a local URL for image preview
-      setPreviewUrl(URL.createObjectURL(file));
-    } else {
-      setImage(null);
-      setPreviewUrl("");
     }
   };
 
@@ -41,25 +35,45 @@ export default function ThirdStep({ updateData, data, prevStep }) {
     formData.append("email", data.Email);
     formData.append("otp", data.OTP);
     formData.append("avatar", image);
-    formData.append("UserName", data.UserName);
+    formData.append("userName", data.UserName);
     // Handle the final form submission logic (e.g., send to API)
 
     axios
       .post("http://localhost:3000/api/v1/auth/userRegister", formData)
       .then((response) => {
         console.log("Login successful:", response.data);
+        alert("Form Submitted Successfully!");
       })
       .catch((error) => {
         console.error("Login error:", error);
       });
     console.log("Form Submitted:", formData);
-    alert("Form Submitted Successfully!");
   };
   return (
     <div className="form-container">
       <form className="form-group" onSubmit={handleSubmit}>
         <h3 className="form-header">Login Form</h3>
-        {previewUrl ? (
+        <div className="profile-picture">
+          <h1 className="upload-icon">
+            <i className="fa fa-plus fa-2x" aria-hidden="true"></i>
+          </h1>
+          <input
+            className="file-uploader"
+            type="file"
+            onChange={handleImageChange}
+            accept=".jpg, .jpeg, .png"
+          />
+        </div>
+        {image && (
+          <div className="profile-picture-preview-container">
+            <img
+              src={URL.createObjectURL(image)}
+              className="profile-picture-preview"
+              alt="Uploaded preview"
+            />
+          </div>
+        )}
+        {/* {previewUrl ? (
           <div className="profile-picture-preview-container">
             <img
               className="profile-picture-preview"
@@ -91,7 +105,7 @@ export default function ThirdStep({ updateData, data, prevStep }) {
               accept=".jpg, .jpeg, .png"
             />
           </div>
-        )}
+        )} */}
         <label className="form-label">Name :</label>
         <input
           type="text"

@@ -17,6 +17,8 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const PORT = process.env.PORT || 3000;
 
+app.use("/uploads", express.static("uploads"));
+
 //Socket.io connection
 io.on("connection", (socket) => {
   console.log("A user connected");

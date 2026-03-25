@@ -10,8 +10,7 @@ const Otp = require("../Models/Otp");
 
 const userRegister = async (req, res) => {
   const {
-    body: { email, otp },
-    file: { avatar },
+    body: { email, otp, userName },
   } = req;
   if (!email || !otp) {
     throw new BadRequestError("Please provide email and otp");
@@ -34,12 +33,17 @@ const userRegister = async (req, res) => {
   // });
   // await user.save();
 
-  const user = await User.create({ ...req.body });
+  const user = await User.create({
+    email,
+    otp,
+    userName,
+    avatar: `/uploads/${req.file.filename}`,
+  });
   if (!user) {
-    throw new UnAuthenticatedError("User not found");
+    throw new NotFoundError("User not found");
   }
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user, token });
+  res.status(StatusCodes.CREATED).json({ user, token });
 };
 
 const updateUserOtp = async (req, res) => {
