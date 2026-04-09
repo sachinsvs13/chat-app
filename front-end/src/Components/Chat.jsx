@@ -6,7 +6,7 @@ export default function Chat() {
   const [chats, setChats] = useState([]);
   useEffect(() => {
     axios
-      .get("/api/v1/chats/getChats")
+      .get("http://localhost:3000/api/v1/chats/getChats")
       .then((response) => {
         setChats(response.data);
       })
@@ -39,17 +39,6 @@ export default function Chat() {
             </div>
           );
         })}
-        <div className="chat-list-item">
-          <img
-            src="https://randomuser.me/api/portraits/women/1.jpg"
-            alt="User Avatar"
-            className="chat-avatar"
-          />
-          <div className="chat-info">
-            <h3 className="chat-name">Jane Smith</h3>
-            <p className="chat-last-message">Let's catch up later!</p>
-          </div>
-        </div>
       </section>
     </aside>
   );
